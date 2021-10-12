@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 import { Button, List } from 'react-native-paper';
 import * as Application from 'expo-application';
-import Firebase from './firebase';
+import Firebase from '../components/firebase';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from './redux/userSlice';
+import { setUser } from '../redux/userSlice';
 export default function accountPage() {
   const [lang] = useState({
     en: {

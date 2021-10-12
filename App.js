@@ -6,36 +6,18 @@ import * as Application from 'expo-application';
 import Firebase from './src/components/firebase';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import accountPage from './src/components/accountPage';
-import Chats from './src/components/Chats';
-import store from './src/components/redux/store';
+import accountPage from './src/pages/accountPage';
+import Chats from './src/pages/Chats';
+import store from './src/redux/store';
 import { Provider as ReduxProvider } from 'react-redux';
+import TabNavigator from './src/Navigations/TabNavigator';
 
 export default function App() {
-  const Tab = createBottomTabNavigator();
-
-  function MyTabs() {
-    return (
-      <Tab.Navigator>
-        <Tab.Screen name="Account Page" component={accountPage} />
-        <Tab.Screen name="Chats" component={Chats} />
-      </Tab.Navigator>
-    );
-  }
-
   return (
     <ReduxProvider store={store}>
       <NavigationContainer>
-        <MyTabs />
+        <TabNavigator />
       </NavigationContainer>
     </ReduxProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {},
-
-  input: {
-    margin: 12,
-  },
-});
