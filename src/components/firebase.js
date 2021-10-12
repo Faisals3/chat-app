@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import '@firebase/firestore';
 
 // Optionally import the services that you want to use
 //import {...} from "firebase/auth";
@@ -17,9 +18,12 @@ const firebaseConfig = {
   messagingSenderId: '828410446844',
   appId: '1:828410446844:web:502aeaf18fea020687e879',
 };
+
 let Firebase;
 if (firebase.apps.length === 0) {
   Firebase = firebase.initializeApp(firebaseConfig);
 }
+
+export const dbRoot = firebase.firestore();
 
 export default Firebase;
