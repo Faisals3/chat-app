@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 import { Button } from 'react-native-paper';
-import Firebase from '../components/firebase';
+import Firebase from '../APIs/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../redux/userSlice';
 export default function accountPage() {

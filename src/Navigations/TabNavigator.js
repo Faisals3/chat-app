@@ -1,5 +1,5 @@
 import accountPage from '../pages/accountPage';
-import Chats from '../pages/Chats';
+import Chats from '../pages/chatPage';
 import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

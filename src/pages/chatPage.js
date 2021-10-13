@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { List, Appbar } from 'react-native-paper';
-import { dbRoot } from '../components/firebase';
+import { dbRoot } from '../APIs/firebase';
 import { useSelector } from 'react-redux';
 
 export default function Chats() {
