@@ -1,4 +1,3 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import accountPage from '../pages/accountPage';
 import Chats from '../pages/Chats';
 import React from 'react';

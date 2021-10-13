@@ -1,11 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
-import { Button, List } from 'react-native-paper';
-import * as Application from 'expo-application';
+import { Button } from 'react-native-paper';
 import Firebase from '../components/firebase';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../redux/userSlice';
 export default function accountPage() {
@@ -113,7 +109,7 @@ export default function accountPage() {
           <Text>
             Have an account ?
             <TouchableOpacity onPress={handleSignPage}>
-              <Text>Sign in</Text>
+              <Text> Sign in</Text>
             </TouchableOpacity>
           </Text>
         </View>
@@ -143,10 +139,10 @@ export default function accountPage() {
         </Button>
 
         <View style={{ marginTop: 30 }}>
-          <Text>
+          <Text style={{ marginTop: 0 }}>
             don't Have an account ?
             <TouchableOpacity onPress={handleSignPage}>
-              <Text>Sign up</Text>
+              <Text style={{ marginTop: 0 }}> Sign up</Text>
             </TouchableOpacity>
           </Text>
         </View>

@@ -1,12 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Button, TextInput, List, Appbar } from 'react-native-paper';
-import * as Application from 'expo-application';
-import Firebase, { dbRoot } from '../components/firebase';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { List, Appbar } from 'react-native-paper';
+import { dbRoot } from '../components/firebase';
+import { useSelector } from 'react-redux';
 
 export default function Chats() {
   const currentUser = useSelector((state) => state.user);
@@ -59,7 +55,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   chatBar: {
-    borderBottomColor: 'black',
-    borderBottomWidth: 2,
+    borderBottomColor: '#CCCCCC',
+    borderBottomWidth: 1,
   },
 });
