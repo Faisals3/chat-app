@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Button, TextInput, List } from 'react-native-paper';
+import { Button, TextInput, List, Appbar } from 'react-native-paper';
 import * as Application from 'expo-application';
 import Firebase, { dbRoot } from '../components/firebase';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -29,29 +29,37 @@ export default function Chats() {
 
   return (
     <View>
+      <Appbar.Header style={styles.bottom}>
+        <Appbar.Action icon="plus" onPress={() => console.log('Pressed archive')} />
+        <Appbar.Action icon="account-multiple-plus" onPress={() => console.log('Pressed mail')} />
+      </Appbar.Header>
+
       <List.Item
         title="Group 1"
         description="ID : 001"
         left={(props) => <List.Icon {...props} icon="chat" />}
+        style={styles.chatBar}
       />
       <List.Item
         title="Group 2"
         description="Id : 002"
         left={(props) => <List.Icon {...props} icon="chat" />}
+        style={styles.chatBar}
       />
-      <List.Item
-        title="Group 3"
-        description="Id : 003"
-        left={(props) => <List.Icon {...props} icon="chat" />}
-      />
-      <List.Item
-        title="Group 4"
-        description="Id : 003"
-        left={(props) => <List.Icon {...props} icon="chat" />}
-      />
-      <Button mode="contained" onPress={addMessage}>
-        Test send message
-      </Button>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  bottom: {
+    position: 'relative',
+    left: 0,
+    right: 0,
+    top: 0,
+    marginTop: 25,
+  },
+  chatBar: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+  },
+});

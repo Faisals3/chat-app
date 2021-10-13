@@ -89,26 +89,33 @@ export default function accountPage() {
 
   const renderSignup = () => {
     const { signup } = lang.en;
+
     return (
-      <View style={styles.container}>
-        <Text>{signup}</Text>
-        <TextInput value={email} onChangeText={(email) => setEmail(email)} style={styles.input} />
-
-        <TextInput
-          value={password}
-          onChangeText={(password) => setPassword(password)}
-          style={styles.input}
-        />
-
+      <View style={{ justifyContent: 'center' }}>
+        <View style={{ justifyContent: 'center' }}>
+          <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 3 }}>{signup}</Text>
+        </View>
+        <View>
+          <TextInput value={email} onChangeText={(email) => setEmail(email)} style={styles.input} />
+        </View>
+        <View>
+          <TextInput
+            value={password}
+            onChangeText={(password) => setPassword(password)}
+            style={styles.input}
+          />
+        </View>
         <Button mode="contained" onPress={createUser}>
           Sign up
         </Button>
 
-        <View>
-          <Text>Have an account ? </Text>
-          <TouchableOpacity onPress={handleSignPage}>
-            <Text>Sign in</Text>
-          </TouchableOpacity>
+        <View style={{ marginTop: 30 }}>
+          <Text>
+            Have an account ?
+            <TouchableOpacity onPress={handleSignPage}>
+              <Text>Sign in</Text>
+            </TouchableOpacity>
+          </Text>
         </View>
       </View>
     );
@@ -117,21 +124,26 @@ export default function accountPage() {
   const rednerSignin = () => {
     const { signin } = lang.en;
     return (
-      <View>
-        <Text>{signin}</Text>
-        <View>
-          <TextInput value={email} onChangeText={(email) => setEmail(email)} />
+      <View style={{ justifyContent: 'center' }}>
+        <View style={{ justifyContent: 'center' }}>
+          <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 3 }}>{signin}</Text>
         </View>
         <View>
-          <TextInput value={password} onChangeText={(password) => setPassword(password)} />
+          <TextInput value={email} onChangeText={(email) => setEmail(email)} style={styles.input} />
+        </View>
+        <View>
+          <TextInput
+            value={password}
+            onChangeText={(password) => setPassword(password)}
+            style={styles.input}
+          />
         </View>
         <Button mode="contained" onPress={signIn}>
           Sign in
         </Button>
 
-        <View>
+        <View style={{ marginTop: 30 }}>
           <Text>
-            {JSON.stringify(currentUser.email)}
             don't Have an account ?
             <TouchableOpacity onPress={handleSignPage}>
               <Text>Sign up</Text>
@@ -149,20 +161,39 @@ export default function accountPage() {
   const renderAccount = () => {
     return (
       <View>
-        <Text>Active user : {currentUser.email}</Text>
-        <Button mode="contained" onPress={Logout}>
+        <Text style={styles.welcomeText}>Welcome : {currentUser.email}</Text>
+        <Button mode="contained" onPress={Logout} style={styles.logoutButton}>
           Logout!
         </Button>
       </View>
     );
   };
 
-  return <View>{currentUser.email === 'none' ? renderAuthentication() : renderAccount()}</View>;
+  return (
+    <View style={styles.container}>
+      {currentUser.email === 'none' ? renderAuthentication() : renderAccount()}
+    </View>
+  );
 }
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    margin: 30,
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginTop: 300,
+  },
+
+  logoutButton: {
+    marginTop: 100,
+  },
 
   input: {
     margin: 12,
+  },
+
+  accountPage: {},
+
+  welcomeText: {
+    fontSize: 20,
   },
 });
