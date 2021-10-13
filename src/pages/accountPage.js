@@ -42,7 +42,7 @@ export default function accountPage() {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        // Signed in
+        // Signed ins
 
         console.log(
           'Signed in Succesfuly user ID : ' +
