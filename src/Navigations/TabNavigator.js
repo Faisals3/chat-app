@@ -4,14 +4,14 @@ import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-export default function myTabsNav() {
+export default function myTabsNav({ navigation }) {
   const Tab = createMaterialBottomTabNavigator();
 
   function MyTabs() {
     return (
       <Tab.Navigator
         initialRouteName="Account Page"
-        activeColor="#e91e63"
+        activeColor="#197278"
         barStyle={{ backgroundColor: 'white' }}
       >
         <Tab.Screen
@@ -38,5 +38,5 @@ export default function myTabsNav() {
     );
   }
 
-  return <MyTabs />;
+  return MyTabs();
 }

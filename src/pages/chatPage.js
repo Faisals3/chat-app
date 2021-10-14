@@ -25,9 +25,8 @@ export default function Chats() {
 
   return (
     <View>
-      <Appbar.Header style={styles.bottom}>
-        <Appbar.Action icon="plus" onPress={() => console.log('Pressed archive')} />
-        <Appbar.Action icon="account-multiple-plus" onPress={() => console.log('Pressed mail')} />
+      <Appbar.Header style={styles.appHeader}>
+        <Appbar.Content title="Chats" />
       </Appbar.Header>
 
       <List.Item
@@ -47,12 +46,9 @@ export default function Chats() {
 }
 
 const styles = StyleSheet.create({
-  bottom: {
-    position: 'relative',
-    left: 0,
-    right: 0,
-    top: 0,
-    marginTop: 25,
+  appHeader: {
+    backgroundColor: '#32292F',
+    justifyContent: 'center',
   },
   chatBar: {
     borderBottomColor: '#CCCCCC',

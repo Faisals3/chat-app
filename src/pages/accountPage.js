@@ -4,15 +4,16 @@ import { Button } from 'react-native-paper';
 import Firebase from '../APIs/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../redux/userSlice';
-export default function accountPage() {
+import RenderAuthentication from './authenticationPage';
+export default function accountPage({ navigation }) {
   const [lang] = useState({
     en: {
       signup: 'Sign Up',
       signin: 'Sign In',
     },
   });
-  const [email, setEmail] = useState('test2@gmail.com');
-  const [password, setPassword] = useState('123123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   //redux
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ export default function accountPage() {
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
         console.log('Signed up succesfuly');
+        signIn();
         setEmail('');
         setPassword('');
       })
@@ -73,6 +75,7 @@ export default function accountPage() {
         email: 'none',
       })
     );
+    navigation.navigate('Authentication Page');
   };
 
   const handleSignPage = () => {
@@ -92,24 +95,30 @@ export default function accountPage() {
           <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 3 }}>{signup}</Text>
         </View>
         <View>
-          <TextInput value={email} onChangeText={(email) => setEmail(email)} style={styles.input} />
+          <TextInput
+            value={email}
+            onChangeText={(email) => setEmail(email)}
+            style={styles.input}
+            placeholder="Enter Email"
+          />
         </View>
         <View>
           <TextInput
             value={password}
             onChangeText={(password) => setPassword(password)}
             style={styles.input}
+            placeholder="Enter Password"
           />
         </View>
-        <Button mode="contained" onPress={createUser}>
+        <Button mode="contained" onPress={createUser} style={styles.button}>
           Sign up
         </Button>
 
-        <View style={{ marginTop: 30 }}>
-          <Text>
+        <View style={{ marginTop: 30, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{}}>
             Have an account ?
             <TouchableOpacity onPress={handleSignPage}>
-              <Text> Sign in</Text>
+              <Text style={{ marginTop: 0 }}> Sign up</Text>
             </TouchableOpacity>
           </Text>
         </View>
@@ -125,21 +134,27 @@ export default function accountPage() {
           <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 3 }}>{signin}</Text>
         </View>
         <View>
-          <TextInput value={email} onChangeText={(email) => setEmail(email)} style={styles.input} />
+          <TextInput
+            value={email}
+            onChangeText={(email) => setEmail(email)}
+            style={styles.input}
+            placeholder="Enter Email"
+          />
         </View>
         <View>
           <TextInput
             value={password}
             onChangeText={(password) => setPassword(password)}
             style={styles.input}
+            placeholder="Enter Password"
           />
         </View>
-        <Button mode="contained" onPress={signIn}>
+        <Button mode="contained" onPress={signIn} style={styles.button}>
           Sign in
         </Button>
 
-        <View style={{ marginTop: 30 }}>
-          <Text style={{ marginTop: 0 }}>
+        <View style={{ marginTop: 30, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{}}>
             don't Have an account ?
             <TouchableOpacity onPress={handleSignPage}>
               <Text style={{ marginTop: 0 }}> Sign up</Text>
@@ -151,7 +166,10 @@ export default function accountPage() {
   };
 
   const renderAuthentication = () => {
-    return <View>{screen === 'signIn' ? rednerSignin() : renderSignup()}</View>;
+    if (screen === 'signIn') {
+      return rednerSignin();
+    }
+    return renderSignup();
   };
 
   const renderAccount = () => {
@@ -167,7 +185,7 @@ export default function accountPage() {
 
   return (
     <View style={styles.container}>
-      {currentUser.email === 'none' ? renderAuthentication() : renderAccount()}
+      {currentUser.email === 'none' ? <RenderAuthentication /> : renderAccount()}
     </View>
   );
 }
@@ -181,10 +199,20 @@ const styles = StyleSheet.create({
 
   logoutButton: {
     marginTop: 100,
+    backgroundColor: '#56D3DC',
+  },
+
+  button: {
+    backgroundColor: '#56D3DC',
   },
 
   input: {
+    height: 40,
+    width: 200,
     margin: 12,
+    borderWidth: 1,
+    padding: 12,
+    borderRadius: 100,
   },
 
   accountPage: {},
