@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, ImageBackground } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import { useDispatch, useSelector } from 'react-redux';
 import { List, Appbar } from 'react-native-paper';
+import { dbRoot } from '../APIs/firebase';
 
 export default function groupChat() {
   const [messages, setMessages] = useState([]);
@@ -11,18 +12,16 @@ export default function groupChat() {
 
   useEffect(() => {}, []);
 
-  const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
-  }, []);
+  const onSend = (messagesToSend = []) => {
+    console.log(messagesToSend[0]);
+    setMessages((previousMessages) => GiftedChat.append(previousMessages, messagesToSend));
 
-  const addMessage = () => {
-    var massegeRan = Math.random().toString();
     dbRoot
       .collection('group_chats')
       .doc(activeChat.activeChatTitle)
       .collection('messages')
-      .doc(massegeRan)
-      .set({ massege: massegeRan, sender: currentUser.uid })
+      .doc(messagesToSend[0]._id)
+      .set(messagesToSend[0])
       .then(() => {
         console.log('message sent succesfuly');
       })
@@ -41,7 +40,9 @@ export default function groupChat() {
         </Appbar.Header>
         <GiftedChat
           messages={messages}
-          onSend={(messages) => onSend(messages)}
+          onSend={(messages) => {
+            onSend(messages);
+          }}
           renderBubble={(props) => {
             return (
               <Bubble
