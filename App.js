@@ -4,6 +4,7 @@ import store from './src/redux/store';
 import { Provider as ReduxProvider } from 'react-redux';
 import TabNavigator from './src/Navigations/TabNavigator';
 import MyStack from './src/Navigations/StackNavigator';
+import { Example } from './src/pages/Example';
 
 export default function App() {
   return (

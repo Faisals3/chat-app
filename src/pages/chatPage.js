@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { List, Appbar } from 'react-native-paper';
 import { dbRoot } from '../APIs/firebase';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActiveChat } from '../redux/chatSlice';
 
-export default function Chats() {
+export default function Chats({ navigation }) {
   const currentUser = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const addMessage = () => {
     var massegeRan = Math.random().toString();
@@ -23,24 +25,51 @@ export default function Chats() {
       });
   };
 
+  function onPressChat(chat) {
+    navigation.navigate('Group Page');
+
+    // set group data in state (redux and gets data from database)
+
+    dispatch(
+      setActiveChat({
+        id: chat.id,
+        title: chat.title,
+      })
+    );
+  }
+
+  const chats = [
+    {
+      id: '62546',
+      title: 'Good group',
+    },
+    {
+      id: '27603 ',
+      title: 'Bad group',
+    },
+  ];
+
   return (
     <View>
       <Appbar.Header style={styles.appHeader}>
         <Appbar.Content title="Chats" />
       </Appbar.Header>
-
-      <List.Item
-        title="Group 1"
-        description="ID : 001"
-        left={(props) => <List.Icon {...props} icon="chat" />}
-        style={styles.chatBar}
-      />
-      <List.Item
-        title="Group 2"
-        description="Id : 002"
-        left={(props) => <List.Icon {...props} icon="chat" />}
-        style={styles.chatBar}
-      />
+      <View>
+        {chats.map((chat) => (
+          <TouchableOpacity
+            key={chat.id}
+            style={styles.chatButton}
+            onPress={() => onPressChat(chat)}
+          >
+            <List.Item
+              title={chat.title}
+              description={chat.id}
+              left={(props) => <List.Icon {...props} icon="chat" />}
+              style={styles.chatBar}
+            />
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   );
 }
@@ -54,4 +83,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#CCCCCC',
     borderBottomWidth: 1,
   },
+
+  chatButton: {},
 });

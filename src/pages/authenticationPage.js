@@ -16,6 +16,7 @@ export default function renderAuthentication({ navigation }) {
   const [password, setPassword] = useState('');
   const [confPassword, setconfPassword] = useState('');
   const [errorMessege, seterrorMessege] = useState('');
+  const [errorMessageAuth, setErrorMessageAuth] = useState('');
 
   //redux
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ export default function renderAuthentication({ navigation }) {
   const [screen, setScreen] = useState('signIn');
 
   const handleMatchPass = () => {
-    if ((password.length > 5) & (confPassword.length > 5)) {
+    if (password !== confPassword) {
       seterrorMessege("Passwords doesn't match!");
     }
   };
@@ -31,27 +32,31 @@ export default function renderAuthentication({ navigation }) {
   const createUser = () => {
     //validation
     handleMatchPass();
-    if (errorMessege.length > 1) {
-      return console.log("Passwords doesn't match");
-    }
+    console.log(errorMessege);
 
     //firebsae and logs
-    console.log('pressed!');
-    const auth = Firebase.auth();
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log('Signed up succesfuly');
-        signIn();
-        setEmail('');
-        setPassword('');
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage + ' - Error Code : ' + errorCode);
-        // ..
-      });
+    if (!errorMessege.length) {
+      console.log('pressed!');
+      const auth = Firebase.auth();
+      auth
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          console.log('Signed up succesfuly');
+          signIn();
+          setEmail('');
+          setPassword('');
+          setconfPassword('');
+          seterrorMessege('');
+          setErrorMessageAuth('');
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessageAuth(error.message);
+          console.log(errorMessage + ' - Error Code : ' + errorCode);
+          // ..
+        });
+    }
   };
 
   const signIn = () => {
@@ -75,7 +80,7 @@ export default function renderAuthentication({ navigation }) {
           })
         );
 
-        navigation.navigate('Account Page');
+        navigation.navigate('TabNavigator');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -104,7 +109,9 @@ export default function renderAuthentication({ navigation }) {
           <View>
             <TextInput
               value={email}
-              onChangeText={(email) => setEmail(email)}
+              onChangeText={(email) => {
+                setEmail(email), setErrorMessageAuth('');
+              }}
               style={styles.input}
               placeholder="Enter Email"
             />
@@ -112,7 +119,9 @@ export default function renderAuthentication({ navigation }) {
           <View>
             <TextInput
               value={password}
-              onChangeText={(password) => setPassword(password)}
+              onChangeText={(password) => {
+                setPassword(password), seterrorMessege('');
+              }}
               style={styles.input}
               placeholder="Enter Password"
             />
@@ -120,7 +129,9 @@ export default function renderAuthentication({ navigation }) {
           <View>
             <TextInput
               value={confPassword}
-              onChangeText={(confPassword) => setconfPassword(confPassword)}
+              onChangeText={(confPassword) => {
+                setconfPassword(confPassword), seterrorMessege('');
+              }}
               style={styles.input}
               placeholder="Confirm Password"
             />
@@ -128,6 +139,10 @@ export default function renderAuthentication({ navigation }) {
           <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
             {errorMessege}
           </Text>
+          <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
+            {errorMessageAuth}
+          </Text>
+
           <Button mode="contained" onPress={createUser} style={styles.button}>
             Sign up
           </Button>
@@ -220,7 +235,7 @@ const styles = StyleSheet.create({
 
   input: {
     height: 40,
-    width: 200,
+    width: 300,
     margin: 12,
     borderWidth: 1,
     padding: 12,
