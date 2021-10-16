@@ -8,17 +8,36 @@ import { dbRoot } from '../APIs/firebase';
 export default function groupChat() {
   const [messages, setMessages] = useState([]);
   const activeChat = useSelector((state) => state.chat);
+  const currentUser = useSelector((state) => state.user);
+  const [test, setTest] = useState([]);
+
   const dispatch = useDispatch();
 
   useEffect(() => {}, []);
 
-  const onSend = (messagesToSend = []) => {
+  async function recieveMessagesFromFireStore() {
+    try {
+      await dbRoot
+        .collection('group_chats')
+        .doc(activeChat.activeChatID)
+        .collection('messages')
+        .onSnapshot((querySnapshot) => {
+          console.log(querySnapshot);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function onSend(messagesToSend = []) {
     console.log(messagesToSend[0]);
     setMessages((previousMessages) => GiftedChat.append(previousMessages, messagesToSend));
+    recieveMessagesFromFireStore();
+    console.log(test);
 
-    dbRoot
+    await dbRoot
       .collection('group_chats')
-      .doc(activeChat.activeChatTitle)
+      .doc(activeChat.activeChatID)
       .collection('messages')
       .doc(messagesToSend[0]._id)
       .set(messagesToSend[0])
@@ -28,9 +47,11 @@ export default function groupChat() {
       .catch(() => {
         console.log('sent message failed');
       });
-  };
+  }
 
-  const image = { uri: 'https://i.ibb.co/XtmzLjB/keith-misner-h0-Vxgz5ty-XA-unsplash.jpg' };
+  const image = {
+    uri: 'https://cdn.statically.io/img/wallpapercave.com/wp/wp3998752.jpg',
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -67,7 +88,7 @@ export default function groupChat() {
             );
           }}
           user={{
-            _id: 1,
+            _id: currentUser.uid,
           }}
         />
       </ImageBackground>

@@ -47,6 +47,10 @@ export default function Chats({ navigation }) {
       id: '27603 ',
       title: 'Bad group',
     },
+    {
+      id: '11111 ',
+      title: 'New group',
+    },
   ];
 
   return (
