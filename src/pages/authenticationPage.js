@@ -197,7 +197,12 @@ export default function renderAuthentication({ navigation }) {
           <Button mode="contained" onPress={signIn} style={styles.button}>
             Sign in
           </Button>
-
+          <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
+            {errorMessege}
+          </Text>
+          <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
+            {errorMessageAuth}
+          </Text>
           <View
             style={{
               marginTop: 30,
@@ -210,6 +215,7 @@ export default function renderAuthentication({ navigation }) {
             <TouchableOpacity onPress={handleSignPage}>
               <Text> Sign up</Text>
             </TouchableOpacity>
+            <View></View>
           </View>
         </View>
       </View>
