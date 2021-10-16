@@ -85,6 +85,7 @@ export default function renderAuthentication({ navigation }) {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        setErrorMessageAuth(error.message);
         console.log(errorMessage + ' - Error Code : ' + errorCode);
       });
   };
@@ -176,7 +177,9 @@ export default function renderAuthentication({ navigation }) {
           <View>
             <TextInput
               value={email}
-              onChangeText={(email) => setEmail(email)}
+              onChangeText={(email) => {
+                setEmail(email), setErrorMessageAuth('');
+              }}
               style={styles.input}
               placeholder="Enter Email"
             />
@@ -184,7 +187,9 @@ export default function renderAuthentication({ navigation }) {
           <View>
             <TextInput
               value={password}
-              onChangeText={(password) => setPassword(password)}
+              onChangeText={(password) => {
+                setPassword(password), setErrorMessageAuth('');
+              }}
               style={styles.input}
               placeholder="Enter Password"
             />
