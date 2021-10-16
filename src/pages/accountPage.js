@@ -20,10 +20,10 @@ export default function accountPage({ navigation }) {
   const currentUser = useSelector((state) => state.user);
   const [screen, setScreen] = useState('signIn');
 
-  const createUser = () => {
+  const createUser = async () => {
     console.log('pressed!');
     const auth = Firebase.auth();
-    auth
+    await auth
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
         console.log('Signed up succesfuly');
@@ -39,9 +39,9 @@ export default function accountPage({ navigation }) {
       });
   };
 
-  const signIn = () => {
+  const signIn = async () => {
     const auth = Firebase.auth();
-    auth
+    await auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         // Signed ins

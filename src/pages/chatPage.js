@@ -1,29 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { List, Appbar } from 'react-native-paper';
-import { dbRoot } from '../APIs/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveChat } from '../redux/chatSlice';
 
 export default function Chats({ navigation }) {
   const currentUser = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
-  const addMessage = () => {
-    var massegeRan = Math.random().toString();
-    dbRoot
-      .collection('group_chats')
-      .doc('001')
-      .collection('messages')
-      .doc(massegeRan)
-      .set({ massege: massegeRan, sender: currentUser.uid })
-      .then(() => {
-        console.log('message sent succesfuly');
-      })
-      .catch(() => {
-        console.log('sent message failed');
-      });
-  };
 
   function onPressChat(chat) {
     navigation.navigate('Group Page');
@@ -50,6 +33,14 @@ export default function Chats({ navigation }) {
     {
       id: '11111 ',
       title: 'New group',
+    },
+    {
+      id: '503503 ',
+      title: 'Free of bugs!! ... hopefuly :(',
+    },
+    {
+      id: '777777 ',
+      title: 'Testing date format!',
     },
   ];
 

@@ -29,7 +29,7 @@ export default function renderAuthentication({ navigation }) {
     }
   };
 
-  const createUser = () => {
+  const createUser = async () => {
     //validation
     handleMatchPass();
     console.log(errorMessege);
@@ -38,7 +38,7 @@ export default function renderAuthentication({ navigation }) {
     if (!errorMessege.length) {
       console.log('pressed!');
       const auth = Firebase.auth();
-      auth
+      await auth
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
           console.log('Signed up succesfuly');
@@ -59,9 +59,9 @@ export default function renderAuthentication({ navigation }) {
     }
   };
 
-  const signIn = () => {
+  const signIn = async () => {
     const auth = Firebase.auth();
-    auth
+    await auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         // Signed ins

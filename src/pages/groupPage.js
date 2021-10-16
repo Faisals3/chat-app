@@ -9,31 +9,40 @@ export default function groupChat() {
   const [messages, setMessages] = useState([]);
   const activeChat = useSelector((state) => state.chat);
   const currentUser = useSelector((state) => state.user);
-  const [test, setTest] = useState([]);
+  const [testMessages, setTestMessages] = useState([]);
+  const [uploadedMessages, setUploadMessages] = useState(false);
 
   const dispatch = useDispatch();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getMessagesFromFireStore();
+  }, []);
 
-  async function recieveMessagesFromFireStore() {
-    try {
-      await dbRoot
-        .collection('group_chats')
-        .doc(activeChat.activeChatID)
-        .collection('messages')
-        .onSnapshot((querySnapshot) => {
-          console.log(querySnapshot);
+  async function getMessagesFromFireStore() {
+    console.log('====== I AM TRIGGREDD!! ======');
+    let array = [];
+
+    await dbRoot
+      .collection('group_chats')
+      .doc(activeChat.activeChatID)
+      .collection('messages')
+      .onSnapshot((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          let updatedDoc = doc.data();
+          updatedDoc.createdAt = updatedDoc.createdAt.toDate();
+          array.push(updatedDoc);
         });
-    } catch (error) {
-      console.log(error);
-    }
+        console.log('I will update Messages!!');
+        array.sort((a, b) => b.createdAt - a.createdAt);
+        setMessages(array);
+        array = [];
+      });
   }
 
   async function onSend(messagesToSend = []) {
     console.log(messagesToSend[0]);
     setMessages((previousMessages) => GiftedChat.append(previousMessages, messagesToSend));
-    recieveMessagesFromFireStore();
-    console.log(test);
+    const createdAt = Date.parse(messagesToSend[0].createdAt); //<--- add this line
 
     await dbRoot
       .collection('group_chats')
