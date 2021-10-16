@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { List, Appbar } from 'react-native-paper';
 import { dbRoot } from '../APIs/firebase';
 
-export default function groupChat() {
+export default function groupChat({ navigation }) {
   const [messages, setMessages] = useState([]);
   const activeChat = useSelector((state) => state.chat);
   const currentUser = useSelector((state) => state.user);
@@ -66,6 +66,7 @@ export default function groupChat() {
     <View style={{ flex: 1 }}>
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
         <Appbar.Header style={styles.appHeader}>
+          <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content title={activeChat.activeChatTitle} />
         </Appbar.Header>
         <GiftedChat
