@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Text, View, StyleSheet, ImageBackground } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import { useDispatch, useSelector } from 'react-redux';
-import { List, Appbar } from 'react-native-paper';
+import { Appbar } from 'react-native-paper';
 import { dbRoot } from '../APIs/firebase';
 
 export default function groupChat({ navigation }) {
@@ -62,12 +62,19 @@ export default function groupChat({ navigation }) {
     uri: 'https://cdn.statically.io/img/wallpapercave.com/wp/wp3998752.jpg',
   };
 
+  const ContentTitle = ({ title, style }) => (
+    <Appbar.Content
+      title={<Text style={style}> {title} </Text>}
+      style={{ alignItems: 'center', marginRight: 40 }}
+    />
+  );
+
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground source={image} resizeMode="cover" style={styles.image}>
         <Appbar.Header style={styles.appHeader}>
           <Appbar.BackAction onPress={() => navigation.goBack()} />
-          <Appbar.Content title={activeChat.activeChatTitle} />
+          <ContentTitle title={activeChat.activeChatTitle} style={{ color: 'white' }} />
         </Appbar.Header>
         <GiftedChat
           messages={messages}

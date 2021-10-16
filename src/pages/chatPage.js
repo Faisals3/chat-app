@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { List, Appbar } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveChat } from '../redux/chatSlice';
@@ -44,10 +44,14 @@ export default function Chats({ navigation }) {
     },
   ];
 
+  const ContentTitle = ({ title, style }) => (
+    <Appbar.Content title={<Text style={style}> {title} </Text>} style={{ alignItems: 'center' }} />
+  );
+
   return (
     <View>
       <Appbar.Header style={styles.appHeader}>
-        <Appbar.Content title="Chats" />
+        <ContentTitle title={'Chats'} style={{ color: 'white' }} />
       </Appbar.Header>
       <View>
         {chats.map((chat) => (
