@@ -98,6 +98,7 @@ export default function groupChat() {
           }}
           user={{
             _id: currentUser.uid,
+            avatar: null,
           }}
         />
       </ImageBackground>
