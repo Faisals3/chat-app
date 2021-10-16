@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native';
 import { Button } from 'react-native-paper';
 import Firebase from '../APIs/firebase';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +24,7 @@ export default function renderAuthentication({ navigation }) {
   const [confPassword, setconfPassword] = useState('');
   const [errorMessege, seterrorMessege] = useState('');
   const [errorMessageAuth, setErrorMessageAuth] = useState('');
+  const [loading, setLoading] = useState(false);
 
   //redux
   const dispatch = useDispatch();
@@ -38,6 +46,7 @@ export default function renderAuthentication({ navigation }) {
     if (!errorMessege.length) {
       console.log('pressed!');
       const auth = Firebase.auth();
+      setLoading(true);
       await auth
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
@@ -54,6 +63,7 @@ export default function renderAuthentication({ navigation }) {
           const errorMessage = error.message;
           setErrorMessageAuth(error.message);
           console.log(errorMessage + ' - Error Code : ' + errorCode);
+          setLoading(false);
           // ..
         });
     }
@@ -61,6 +71,7 @@ export default function renderAuthentication({ navigation }) {
 
   const signIn = async () => {
     const auth = Firebase.auth();
+    setLoading(true);
     await auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
@@ -79,7 +90,7 @@ export default function renderAuthentication({ navigation }) {
             email: userCredential.user.email,
           })
         );
-
+        setLoading(false);
         navigation.navigate('TabNavigator');
       })
       .catch((error) => {
@@ -87,6 +98,7 @@ export default function renderAuthentication({ navigation }) {
         const errorMessage = error.message;
         setErrorMessageAuth(error.message);
         console.log(errorMessage + ' - Error Code : ' + errorCode);
+        setLoading(false);
       });
   };
 
@@ -100,124 +112,139 @@ export default function renderAuthentication({ navigation }) {
 
   const renderSignup = () => {
     const { signup } = lang.en;
-
-    return (
-      <View style={styles.container}>
-        <View style={{ justifyContent: 'center' }}>
+    if (loading === false) {
+      //loading false
+      return (
+        <View style={styles.container}>
           <View style={{ justifyContent: 'center' }}>
-            <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 3 }}>{signup}</Text>
-          </View>
-          <View>
-            <TextInput
-              value={email}
-              onChangeText={(email) => {
-                setEmail(email), setErrorMessageAuth('');
-              }}
-              style={styles.input}
-              placeholder="Enter Email"
-            />
-          </View>
-          <View>
-            <TextInput
-              value={password}
-              onChangeText={(password) => {
-                setPassword(password), seterrorMessege('');
-              }}
-              style={styles.input}
-              placeholder="Enter Password"
-            />
-          </View>
-          <View>
-            <TextInput
-              value={confPassword}
-              onChangeText={(confPassword) => {
-                setconfPassword(confPassword), seterrorMessege('');
-              }}
-              style={styles.input}
-              placeholder="Confirm Password"
-            />
-          </View>
-          <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
-            {errorMessege}
-          </Text>
-          <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
-            {errorMessageAuth}
-          </Text>
+            <View style={{ justifyContent: 'center' }}>
+              <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 3 }}>{signup}</Text>
+            </View>
+            <View>
+              <TextInput
+                value={email}
+                onChangeText={(email) => {
+                  setEmail(email), setErrorMessageAuth('');
+                }}
+                style={styles.input}
+                placeholder="Enter Email"
+              />
+            </View>
+            <View>
+              <TextInput
+                value={password}
+                onChangeText={(password) => {
+                  setPassword(password), seterrorMessege('');
+                }}
+                style={styles.input}
+                placeholder="Enter Password"
+              />
+            </View>
+            <View>
+              <TextInput
+                value={confPassword}
+                onChangeText={(confPassword) => {
+                  setconfPassword(confPassword), seterrorMessege('');
+                }}
+                style={styles.input}
+                placeholder="Confirm Password"
+              />
+            </View>
+            <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
+              {errorMessege}
+            </Text>
+            <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
+              {errorMessageAuth}
+            </Text>
 
-          <Button mode="contained" onPress={createUser} style={styles.button}>
-            Sign up
-          </Button>
+            <Button mode="contained" onPress={createUser} style={styles.button}>
+              Sign up
+            </Button>
 
-          <View
-            style={{
-              marginTop: 30,
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-            }}
-          >
-            <Text>Have an account ?</Text>
-            <TouchableOpacity onPress={handleSignPage}>
-              <Text> Sign in</Text>
-            </TouchableOpacity>
+            <View
+              style={{
+                marginTop: 30,
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+              }}
+            >
+              <Text>Have an account ?</Text>
+              <TouchableOpacity onPress={handleSignPage}>
+                <Text> Sign in</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-    );
+      );
+    }
+    return renderLoading();
   };
 
   const rednerSignin = () => {
     const { signin } = lang.en;
-    return (
-      <View style={styles.container}>
-        <View style={{ justifyContent: 'center' }}>
+    if (loading === false) {
+      return (
+        <View style={styles.container}>
           <View style={{ justifyContent: 'center' }}>
-            <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 3 }}>{signin}</Text>
-          </View>
-          <View>
-            <TextInput
-              value={email}
-              onChangeText={(email) => {
-                setEmail(email), setErrorMessageAuth('');
+            <View style={{ justifyContent: 'center' }}>
+              <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 3 }}>{signin}</Text>
+            </View>
+            <View>
+              <TextInput
+                value={email}
+                onChangeText={(email) => {
+                  setEmail(email), setErrorMessageAuth('');
+                }}
+                style={styles.input}
+                placeholder="Enter Email"
+              />
+            </View>
+            <View>
+              <TextInput
+                value={password}
+                onChangeText={(password) => {
+                  setPassword(password), setErrorMessageAuth('');
+                }}
+                style={styles.input}
+                placeholder="Enter Password"
+              />
+            </View>
+            <Button mode="contained" onPress={signIn} style={styles.button}>
+              Sign in
+            </Button>
+            <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
+              {errorMessege}
+            </Text>
+            <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
+              {errorMessageAuth}
+            </Text>
+            <View
+              style={{
+                marginTop: 30,
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
               }}
-              style={styles.input}
-              placeholder="Enter Email"
-            />
-          </View>
-          <View>
-            <TextInput
-              value={password}
-              onChangeText={(password) => {
-                setPassword(password), setErrorMessageAuth('');
-              }}
-              style={styles.input}
-              placeholder="Enter Password"
-            />
-          </View>
-          <Button mode="contained" onPress={signIn} style={styles.button}>
-            Sign in
-          </Button>
-          <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
-            {errorMessege}
-          </Text>
-          <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
-            {errorMessageAuth}
-          </Text>
-          <View
-            style={{
-              marginTop: 30,
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-            }}
-          >
-            <Text>don't Have an account ?</Text>
-            <TouchableOpacity onPress={handleSignPage}>
-              <Text> Sign up</Text>
-            </TouchableOpacity>
-            <View></View>
+            >
+              <Text>don't Have an account ?</Text>
+              <TouchableOpacity onPress={handleSignPage}>
+                <Text> Sign up</Text>
+              </TouchableOpacity>
+              <View></View>
+            </View>
           </View>
         </View>
+      );
+    }
+
+    return renderLoading();
+  };
+
+  const renderLoading = () => {
+    return (
+      <View style={[styles.containerLoading, styles.horizontalLoading]}>
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
   };
@@ -227,6 +254,7 @@ export default function renderAuthentication({ navigation }) {
   }
   return renderSignup();
 }
+
 const styles = StyleSheet.create({
   container: {
     margin: 30,
@@ -257,5 +285,11 @@ const styles = StyleSheet.create({
 
   welcomeText: {
     fontSize: 20,
+  },
+
+  containerLoading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
