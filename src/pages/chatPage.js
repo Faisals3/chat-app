@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { List, Appbar } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveChat } from '../redux/chatSlice';
+import { dbRoot } from '../APIs/firebase';
 
 export default function Chats({ navigation }) {
   const currentUser = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [lang] = useState({
+    en: {
+      signup: 'Sign Up',
+      signin: 'Sign In',
+      chatHeader: 'Chat',
+      accountPageHeader: 'Account Page',
+    },
+  });
 
   function onPressChat(chat) {
     navigation.navigate('Group Page');
@@ -20,6 +29,16 @@ export default function Chats({ navigation }) {
       })
     );
   }
+
+  useEffect(() => {
+    // dbRoot.collection('group_chats').onSnapshot((querySnapshot) => {
+    //   querySnapshot.forEach((doc) => {
+    //     console.log(doc.data());
+    //   });
+    // });
+    console.log(dbRoot.collection('group_chat'));
+    console.log('I am here');
+  }, []);
 
   const chats = [
     {
@@ -51,7 +70,7 @@ export default function Chats({ navigation }) {
   return (
     <View>
       <Appbar.Header style={styles.appHeader}>
-        <ContentTitle title={'Chats'} style={{ color: 'white' }} />
+        <ContentTitle title={lang.en.chatHeader} style={{ color: 'white' }} />
       </Appbar.Header>
       <View>
         {chats.map((chat) => (

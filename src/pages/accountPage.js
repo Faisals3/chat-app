@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-nativ
 import { Button } from 'react-native-paper';
 import Firebase from '../APIs/firebase';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../redux/userSlice';
+import { setUserAction } from '../redux/userSlice';
 import RenderAuthentication from './authenticationPage';
 import { Appbar } from 'react-native-paper';
 export default function accountPage({ navigation }) {
@@ -11,6 +11,8 @@ export default function accountPage({ navigation }) {
     en: {
       signup: 'Sign Up',
       signin: 'Sign In',
+      chatHeader: 'Chat',
+      accountPageHeader: 'Account Page',
     },
   });
   const [email, setEmail] = useState('');
@@ -24,7 +26,7 @@ export default function accountPage({ navigation }) {
   const createUser = async () => {
     console.log('pressed!');
     const auth = Firebase.auth();
-    await auth
+    auth
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
         console.log('Signed up succesfuly');
@@ -42,7 +44,7 @@ export default function accountPage({ navigation }) {
 
   const signIn = async () => {
     const auth = Firebase.auth();
-    await auth
+    auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         // Signed ins
@@ -55,7 +57,7 @@ export default function accountPage({ navigation }) {
         );
 
         dispatch(
-          setUser({
+          setUserAction({
             uid: userCredential.user.uid,
             email: userCredential.user.email,
           })
@@ -71,7 +73,7 @@ export default function accountPage({ navigation }) {
   const Logout = () => {
     const empty = 'none';
     dispatch(
-      setUser({
+      setUserAction({
         uid: 'none',
         email: 'none',
       })
@@ -180,7 +182,7 @@ export default function accountPage({ navigation }) {
       <View>
         <View>
           <Appbar.Header style={styles.appHeader}>
-            <ContentTitle title={'Account Page'} style={{ color: 'white' }} />
+            <ContentTitle title={lang.en.accountPageHeader} style={{ color: 'white' }} />
           </Appbar.Header>
         </View>
         <View style={styles.container}>

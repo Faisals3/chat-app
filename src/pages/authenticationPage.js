@@ -10,7 +10,7 @@ import {
 import { Button } from 'react-native-paper';
 import Firebase from '../APIs/firebase';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../redux/userSlice';
+import { setUserAction } from '../redux/userSlice';
 
 export default function renderAuthentication({ navigation }) {
   const [lang] = useState({
@@ -47,7 +47,7 @@ export default function renderAuthentication({ navigation }) {
       console.log('pressed!');
       const auth = Firebase.auth();
       setLoading(true);
-      await auth
+      auth
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
           console.log('Signed up succesfuly');
@@ -72,7 +72,7 @@ export default function renderAuthentication({ navigation }) {
   const signIn = async () => {
     const auth = Firebase.auth();
     setLoading(true);
-    await auth
+    auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         // Signed ins
@@ -85,7 +85,7 @@ export default function renderAuthentication({ navigation }) {
         );
 
         dispatch(
-          setUser({
+          setUserAction({
             uid: userCredential.user.uid,
             email: userCredential.user.email,
           })

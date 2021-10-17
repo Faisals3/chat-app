@@ -28,7 +28,7 @@ export default function groupChat({ navigation }) {
       .collection('messages')
       .onSnapshot((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          let updatedDoc = doc.data();
+          const updatedDoc = doc.data();
           updatedDoc.createdAt = updatedDoc.createdAt.toDate();
           array.push(updatedDoc);
         });
@@ -42,7 +42,6 @@ export default function groupChat({ navigation }) {
   async function onSend(messagesToSend = []) {
     console.log(messagesToSend[0]);
     setMessages((previousMessages) => GiftedChat.append(previousMessages, messagesToSend));
-    const createdAt = Date.parse(messagesToSend[0].createdAt); //<--- add this line
 
     await dbRoot
       .collection('group_chats')
