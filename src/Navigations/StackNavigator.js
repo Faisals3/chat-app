@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AuthenticationPage from '../pages/authenticationPage';
 import TabNavigator from './TabNavigator';
 import groupChat from '../pages/groupPage';
+import newChatPage from '../pages/newChatPage';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,7 @@ export default function MyStack() {
       />
       <Stack.Screen name="TabNavigator" component={TabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="Group Page" component={groupChat} options={{ headerShown: false }} />
+      <Stack.Screen name="New Chat Page" component={newChatPage} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
