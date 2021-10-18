@@ -1,29 +1,21 @@
-import React from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import { List, Appbar } from 'react-native-paper';
-import { dbRoot } from '../APIs/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveChat } from '../redux/chatSlice';
+import { dbRoot } from '../APIs/firebase';
 
 export default function Chats({ navigation }) {
   const currentUser = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
-  const addMessage = () => {
-    var massegeRan = Math.random().toString();
-    dbRoot
-      .collection('group_chats')
-      .doc('001')
-      .collection('messages')
-      .doc(massegeRan)
-      .set({ massege: massegeRan, sender: currentUser.uid })
-      .then(() => {
-        console.log('message sent succesfuly');
-      })
-      .catch(() => {
-        console.log('sent message failed');
-      });
-  };
+  const [lang] = useState({
+    en: {
+      signup: 'Sign Up',
+      signin: 'Sign In',
+      chatHeader: 'Chat',
+      accountPageHeader: 'Account Page',
+    },
+  });
 
   function onPressChat(chat) {
     navigation.navigate('Group Page');
@@ -38,6 +30,16 @@ export default function Chats({ navigation }) {
     );
   }
 
+  useEffect(() => {
+    // dbRoot.collection('group_chats').onSnapshot((querySnapshot) => {
+    //   querySnapshot.forEach((doc) => {
+    //     console.log(doc.data());
+    //   });
+    // });
+    console.log(dbRoot.collection('group_chat'));
+    console.log('I am here');
+  }, []);
+
   const chats = [
     {
       id: '62546',
@@ -51,12 +53,24 @@ export default function Chats({ navigation }) {
       id: '11111 ',
       title: 'New group',
     },
+    {
+      id: '503503 ',
+      title: 'Free of bugs!! ... hopefuly :(',
+    },
+    {
+      id: '777777 ',
+      title: 'Testing date format!',
+    },
   ];
+
+  const ContentTitle = ({ title, style }) => (
+    <Appbar.Content title={<Text style={style}> {title} </Text>} style={{ alignItems: 'center' }} />
+  );
 
   return (
     <View>
       <Appbar.Header style={styles.appHeader}>
-        <Appbar.Content title="Chats" />
+        <ContentTitle title={lang.en.chatHeader} style={{ color: 'white' }} />
       </Appbar.Header>
       <View>
         {chats.map((chat) => (

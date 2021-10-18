@@ -3,13 +3,16 @@ import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-nativ
 import { Button } from 'react-native-paper';
 import Firebase from '../APIs/firebase';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from '../redux/userSlice';
+import { setUserAction } from '../redux/userSlice';
 import RenderAuthentication from './authenticationPage';
+import { Appbar } from 'react-native-paper';
 export default function accountPage({ navigation }) {
   const [lang] = useState({
     en: {
       signup: 'Sign Up',
       signin: 'Sign In',
+      chatHeader: 'Chat',
+      accountPageHeader: 'Account Page',
     },
   });
   const [email, setEmail] = useState('');
@@ -20,7 +23,7 @@ export default function accountPage({ navigation }) {
   const currentUser = useSelector((state) => state.user);
   const [screen, setScreen] = useState('signIn');
 
-  const createUser = () => {
+  const createUser = async () => {
     console.log('pressed!');
     const auth = Firebase.auth();
     auth
@@ -39,7 +42,7 @@ export default function accountPage({ navigation }) {
       });
   };
 
-  const signIn = () => {
+  const signIn = async () => {
     const auth = Firebase.auth();
     auth
       .signInWithEmailAndPassword(email, password)
@@ -54,7 +57,7 @@ export default function accountPage({ navigation }) {
         );
 
         dispatch(
-          setUser({
+          setUserAction({
             uid: userCredential.user.uid,
             email: userCredential.user.email,
           })
@@ -70,7 +73,7 @@ export default function accountPage({ navigation }) {
   const Logout = () => {
     const empty = 'none';
     dispatch(
-      setUser({
+      setUserAction({
         uid: 'none',
         email: 'none',
       })
@@ -171,30 +174,35 @@ export default function accountPage({ navigation }) {
     }
     return renderSignup();
   };
-
+  const ContentTitle = ({ title, style }) => (
+    <Appbar.Content title={<Text style={style}> {title} </Text>} style={{ alignItems: 'center' }} />
+  );
   const renderAccount = () => {
     return (
       <View>
-        <Text style={styles.welcomeText}>Welcome : {currentUser.email}</Text>
-        <Button mode="contained" onPress={Logout} style={styles.logoutButton}>
-          Logout!
-        </Button>
+        <View>
+          <Appbar.Header style={styles.appHeader}>
+            <ContentTitle title={lang.en.accountPageHeader} style={{ color: 'white' }} />
+          </Appbar.Header>
+        </View>
+        <View style={styles.container}>
+          <Text style={styles.welcomeText}>Welcome : {currentUser.email}</Text>
+          <Button mode="contained" onPress={Logout} style={styles.logoutButton}>
+            Logout!
+          </Button>
+        </View>
       </View>
     );
   };
 
-  return (
-    <View style={styles.container}>
-      {currentUser.email === 'none' ? <RenderAuthentication /> : renderAccount()}
-    </View>
-  );
+  return <View>{currentUser.email === 'none' ? <RenderAuthentication /> : renderAccount()}</View>;
 }
 const styles = StyleSheet.create({
   container: {
     margin: 30,
     flexDirection: 'column',
     alignItems: 'center',
-    marginTop: 300,
+    marginTop: 240,
   },
 
   logoutButton: {
@@ -219,5 +227,8 @@ const styles = StyleSheet.create({
 
   welcomeText: {
     fontSize: 20,
+  },
+  appHeader: {
+    backgroundColor: '#32292F',
   },
 });
