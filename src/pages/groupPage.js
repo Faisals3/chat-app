@@ -79,6 +79,7 @@ export default function groupChat({ navigation }) {
           onSend={(messages) => {
             onSend(messages);
           }}
+          renderUsernameOnMessage={true}
           renderBubble={(props) => {
             return (
               <Bubble
@@ -105,6 +106,7 @@ export default function groupChat({ navigation }) {
           user={{
             _id: currentUser.uid,
             avatar: null,
+            name: currentUser.email,
           }}
         />
       </ImageBackground>
