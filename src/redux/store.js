@@ -24,8 +24,9 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage: AsyncStorage,
+  whitelist: ['user', 'chat'],
 };
-
+//add white list to store congig
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
