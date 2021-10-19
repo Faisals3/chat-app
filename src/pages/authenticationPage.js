@@ -6,6 +6,8 @@ import {
   View,
   TextInput,
   ActivityIndicator,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import Firebase from '../APIs/firebase';
@@ -112,8 +114,8 @@ export default function renderAuthentication({ navigation }) {
     if (loading === false) {
       //loading false
       return (
-        <View style={styles.container}>
-          <View style={{ justifyContent: 'center' }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
             <View style={{ justifyContent: 'center' }}>
               <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 3 }}>{signup}</Text>
             </View>
@@ -172,7 +174,7 @@ export default function renderAuthentication({ navigation }) {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       );
     }
     return renderLoading();
@@ -182,8 +184,8 @@ export default function renderAuthentication({ navigation }) {
     const { signin } = lang.en;
     if (loading === false) {
       return (
-        <View style={styles.container}>
-          <View style={{ justifyContent: 'center' }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
             <View style={{ justifyContent: 'center' }}>
               <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 3 }}>{signin}</Text>
             </View>
@@ -231,7 +233,7 @@ export default function renderAuthentication({ navigation }) {
               <View></View>
             </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       );
     }
 
@@ -254,10 +256,11 @@ export default function renderAuthentication({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 30,
+    flex: 1,
+    padding: 30,
     flexDirection: 'column',
     alignItems: 'center',
-    marginTop: 300,
+    paddingTop: 200,
   },
 
   logoutButton: {
