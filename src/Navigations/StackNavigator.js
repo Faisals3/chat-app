@@ -18,6 +18,7 @@ export default function MyStack() {
         options={{ headerShown: false }}
       />
       <Stack.Screen name="Group Page" component={groupChat} options={{ headerShown: false }} />
+      <Stack.Screen name="New Chat Page" component={newChatPage} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

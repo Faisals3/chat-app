@@ -35,19 +35,9 @@ export default function renderAuthentication({ navigation }) {
   const currentUser = useSelector((state) => state.user);
   const [screen, setScreen] = useState('signIn');
 
-  const handleMatchPass = () => {
-    if (password !== confPassword) {
-      seterrorMessege("Passwords doesn't match!");
-    }
-  };
-
   const createUser = async () => {
-    //validation
-    handleMatchPass();
-    console.log(errorMessege);
-
     //firebsae and logs
-    if (!errorMessege.length) {
+    if (password === confPassword) {
       console.log('pressed!');
       const auth = Firebase.auth();
       setLoading(true);
@@ -70,6 +60,9 @@ export default function renderAuthentication({ navigation }) {
           setLoading(false);
           // ..
         });
+    } else {
+      console.log('Signup Failed');
+      seterrorMessege("Passwords doesn't match!!");
     }
   };
 
