@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import { List, Appbar } from 'react-native-paper';
+import { List, Appbar, FAB } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveChat } from '../redux/chatSlice';
 import { dbRoot } from '../APIs/firebase';
@@ -8,6 +8,7 @@ import { dbRoot } from '../APIs/firebase';
 export default function Chats({ navigation }) {
   const currentUser = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [userGroupsList, setUserGroupsList] = useState([]);
   const [lang] = useState({
     en: {
       signup: 'Sign Up',
@@ -31,49 +32,35 @@ export default function Chats({ navigation }) {
   }
 
   useEffect(() => {
-    // dbRoot.collection('group_chats').onSnapshot((querySnapshot) => {
-    //   querySnapshot.forEach((doc) => {
-    //     console.log(doc.data());
-    //   });
-    // });
-    console.log(dbRoot.collection('group_chat'));
-    console.log('I am here');
+    getGroupsFromFireBase();
   }, []);
 
-  const chats = [
-    {
-      id: '62546',
-      title: 'Good group',
-    },
-    {
-      id: '27603 ',
-      title: 'Bad group',
-    },
-    {
-      id: '11111 ',
-      title: 'New group',
-    },
-    {
-      id: '503503 ',
-      title: 'Free of bugs!! ... hopefuly :(',
-    },
-    {
-      id: '777777 ',
-      title: 'Testing date format!',
-    },
-  ];
+  const getGroupsFromFireBase = () => {
+    let userGroups = [];
+    dbRoot.collection('group_chats').onSnapshot((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        if (doc.data().users.includes(currentUser.uid)) {
+          userGroups.push(doc.data());
+        }
+      });
+      setUserGroupsList(userGroups);
+      userGroups = [];
+
+      console.log(userGroupsList);
+    });
+  };
 
   const ContentTitle = ({ title, style }) => (
     <Appbar.Content title={<Text style={style}> {title} </Text>} style={{ alignItems: 'center' }} />
   );
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <Appbar.Header style={styles.appHeader}>
         <ContentTitle title={lang.en.chatHeader} style={{ color: 'white' }} />
       </Appbar.Header>
       <View>
-        {chats.map((chat) => (
+        {userGroupsList.map((chat) => (
           <TouchableOpacity
             key={chat.id}
             style={styles.chatButton}
@@ -88,6 +75,12 @@ export default function Chats({ navigation }) {
           </TouchableOpacity>
         ))}
       </View>
+      <FAB
+        style={styles.fab}
+        small
+        icon="plus"
+        onPress={() => navigation.navigate('New Chat Page')}
+      />
     </View>
   );
 }
@@ -103,4 +96,11 @@ const styles = StyleSheet.create({
   },
 
   chatButton: {},
+
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0,
+  },
 });

@@ -20,8 +20,8 @@ export default function groupChat({ navigation }) {
 
   async function getMessagesFromFireStore() {
     console.log('====== I AM TRIGGREDD!! ======');
-    let array = [];
 
+    let array = [];
     await dbRoot
       .collection('group_chats')
       .doc(activeChat.activeChatID)
@@ -32,7 +32,6 @@ export default function groupChat({ navigation }) {
           updatedDoc.createdAt = updatedDoc.createdAt.toDate();
           array.push(updatedDoc);
         });
-        console.log('I will update Messages!!');
         array.sort((a, b) => b.createdAt - a.createdAt);
         setMessages(array);
         array = [];
