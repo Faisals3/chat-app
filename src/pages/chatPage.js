@@ -49,28 +49,6 @@ export default function Chats({ navigation }) {
       console.log(userGroupsList);
     });
   };
-  const chats = [
-    {
-      id: '62546',
-      title: 'Good group',
-    },
-    {
-      id: '27603 ',
-      title: 'Bad group',
-    },
-    {
-      id: '11111 ',
-      title: 'New group',
-    },
-    {
-      id: '503503 ',
-      title: 'Free of bugs!! ... hopefuly :(',
-    },
-    {
-      id: '777777 ',
-      title: 'Testing date format!',
-    },
-  ];
 
   const ContentTitle = ({ title, style }) => (
     <Appbar.Content title={<Text style={style}> {title} </Text>} style={{ alignItems: 'center' }} />

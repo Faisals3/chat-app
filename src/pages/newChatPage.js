@@ -3,6 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Text, TextInput } from 'react-nativ
 import { Appbar, Button } from 'react-native-paper';
 import { dbRoot } from '../APIs/firebase';
 import { useDispatch, useSelector } from 'react-redux';
+import { uuid8D } from '../utils/uuid8D';
 
 export default function newChatPage({ navigation }) {
   const [lang] = useState({
@@ -64,21 +65,22 @@ export default function newChatPage({ navigation }) {
 
   const createGroup = async () => {
     let newUsersArray = [currentUser.uid];
+    const groupId = uuid8D();
 
     const newGroup = {
       title,
       users: newUsersArray,
-      id,
+      id: groupId,
     };
 
     //Create group validation
-    const groupDetails = dbRoot.collection('group_chats').doc(id);
+    const groupDetails = dbRoot.collection('group_chats').doc(groupId);
     const doc = await groupDetails.get();
     if (!doc.exists) {
       //group should be created
       dbRoot
         .collection('group_chats')
-        .doc(id)
+        .doc(groupId)
         .set(newGroup)
         .then(() => {
           console.log('group created succesfuly');
@@ -88,7 +90,7 @@ export default function newChatPage({ navigation }) {
           console.log('group created failed');
         });
     } else {
-      seterrorMessege('Group already exist with this ID. Group ID must be unique');
+      seterrorMessege('Group Creattion failed. Please try again later');
     }
   };
 
@@ -143,14 +145,6 @@ export default function newChatPage({ navigation }) {
           <ContentTitle title={lang.en.newChat} style={{ color: 'white' }} />
         </Appbar.Header>
         <View style={styles.container}>
-          <TextInput
-            value={id}
-            onChangeText={(id) => {
-              setId(id), seterrorMessege('');
-            }}
-            style={styles.input}
-            placeholder="Enter Group ID"
-          />
           <TextInput
             value={title}
             onChangeText={(title) => setTitle(title)}
