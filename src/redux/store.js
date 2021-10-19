@@ -1,11 +1,40 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import userReducer from './userSlice';
 import chatReducer from './chatSlice';
+import { combineReducers } from 'redux';
 
-export default configureStore({
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
-  reducer: {
-    user: userReducer,
-    chat: chatReducer,
-  },
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  persistStore,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from 'redux-persist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const rootReducer = combineReducers({
+  user: userReducer,
+  chat: chatReducer,
 });
+
+const persistConfig = {
+  key: 'root',
+  version: 1,
+  storage: AsyncStorage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
+});
+
+export const persistor = persistStore(store);

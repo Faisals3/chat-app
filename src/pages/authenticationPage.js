@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -25,6 +25,10 @@ export default function renderAuthentication({ navigation }) {
   const [errorMessege, seterrorMessege] = useState('');
   const [errorMessageAuth, setErrorMessageAuth] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    console.log('Current user email : ' + currentUser.email);
+  }, []);
 
   //redux
   const dispatch = useDispatch();

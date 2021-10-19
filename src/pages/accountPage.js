@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 import { Button } from 'react-native-paper';
 import Firebase from '../APIs/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserAction } from '../redux/userSlice';
 import RenderAuthentication from './authenticationPage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Appbar } from 'react-native-paper';
 export default function accountPage({ navigation }) {
   const [lang] = useState({
