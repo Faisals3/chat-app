@@ -114,7 +114,7 @@ export default function renderAuthentication({ navigation }) {
     if (loading === false) {
       //loading false
       return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.container}>
             <View style={{ justifyContent: 'center' }}>
               <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 3 }}>{signup}</Text>
@@ -186,7 +186,7 @@ export default function renderAuthentication({ navigation }) {
     const { signin } = lang.en;
     if (loading === false) {
       return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.container}>
             <View style={{ justifyContent: 'center' }}>
               <Text style={{ fontSize: 20, textAlign: 'center', marginBottom: 3 }}>{signin}</Text>
