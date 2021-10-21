@@ -137,6 +137,7 @@ export default function renderAuthentication({ navigation }) {
                 }}
                 style={styles.input}
                 placeholder="Enter Password"
+                secureTextEntry={true}
               />
             </View>
             <View>
@@ -147,6 +148,7 @@ export default function renderAuthentication({ navigation }) {
                 }}
                 style={styles.input}
                 placeholder="Confirm Password"
+                secureTextEntry={true}
               />
             </View>
             <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
@@ -205,6 +207,7 @@ export default function renderAuthentication({ navigation }) {
                 onChangeText={(password) => {
                   setPassword(password), setErrorMessageAuth('');
                 }}
+                secureTextEntry={true}
                 style={styles.input}
                 placeholder="Enter Password"
               />
