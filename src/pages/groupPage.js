@@ -75,7 +75,7 @@ export default function groupChat({ navigation }) {
   );
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={{ flex: 1 }}>
         <ImageBackground source={image} resizeMode="cover" style={styles.image}>
           <Appbar.Header style={styles.appHeader}>

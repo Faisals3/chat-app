@@ -104,7 +104,7 @@ export default function newChatPage({ navigation }) {
 
   const renderJoinGroup = () => {
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View>
           <Appbar.Header style={styles.appHeader}>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
@@ -149,7 +149,7 @@ export default function newChatPage({ navigation }) {
 
   const renderCreateGroup = () => {
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View>
           <Appbar.Header style={styles.appHeader}>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
