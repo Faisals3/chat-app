@@ -1,5 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Text, View, StyleSheet, ImageBackground } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  ImageBackground,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import { useDispatch, useSelector } from 'react-redux';
 import { Appbar } from 'react-native-paper';
@@ -68,49 +75,51 @@ export default function groupChat({ navigation }) {
   );
 
   return (
-    <View style={{ flex: 1 }}>
-      <ImageBackground source={image} resizeMode="cover" style={styles.image}>
-        <Appbar.Header style={styles.appHeader}>
-          <Appbar.BackAction onPress={() => navigation.goBack()} />
-          <ContentTitle title={activeChat.activeChatTitle} style={{ color: 'white' }} />
-        </Appbar.Header>
-        <GiftedChat
-          messages={messages}
-          onSend={(messages) => {
-            onSend(messages);
-          }}
-          renderUsernameOnMessage={true}
-          renderBubble={(props) => {
-            return (
-              <Bubble
-                {...props}
-                textStyle={{
-                  right: {
-                    color: 'white',
-                  },
-                  left: {
-                    color: '#24204F',
-                  },
-                }}
-                wrapperStyle={{
-                  left: {
-                    backgroundColor: '#E6F5F3',
-                  },
-                  right: {
-                    backgroundColor: '#197278',
-                  },
-                }}
-              />
-            );
-          }}
-          user={{
-            _id: currentUser.uid,
-            avatar: null,
-            name: currentUser.email,
-          }}
-        />
-      </ImageBackground>
-    </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <View style={{ flex: 1 }}>
+        <ImageBackground source={image} resizeMode="cover" style={styles.image}>
+          <Appbar.Header style={styles.appHeader}>
+            <Appbar.BackAction onPress={() => navigation.goBack()} />
+            <ContentTitle title={activeChat.activeChatTitle} style={{ color: 'white' }} />
+          </Appbar.Header>
+          <GiftedChat
+            messages={messages}
+            onSend={(messages) => {
+              onSend(messages);
+            }}
+            renderUsernameOnMessage={true}
+            renderBubble={(props) => {
+              return (
+                <Bubble
+                  {...props}
+                  textStyle={{
+                    right: {
+                      color: 'white',
+                    },
+                    left: {
+                      color: '#24204F',
+                    },
+                  }}
+                  wrapperStyle={{
+                    left: {
+                      backgroundColor: '#E6F5F3',
+                    },
+                    right: {
+                      backgroundColor: '#197278',
+                    },
+                  }}
+                />
+              );
+            }}
+            user={{
+              _id: currentUser.uid,
+              avatar: null,
+              name: currentUser.email,
+            }}
+          />
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

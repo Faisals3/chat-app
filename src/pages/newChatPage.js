@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, TextInput } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { Appbar, Button } from 'react-native-paper';
 import { dbRoot } from '../APIs/firebase';
 import { useDispatch, useSelector } from 'react-redux';
@@ -96,83 +104,87 @@ export default function newChatPage({ navigation }) {
 
   const renderJoinGroup = () => {
     return (
-      <View>
-        <Appbar.Header style={styles.appHeader}>
-          <Appbar.BackAction onPress={() => navigation.goBack()} />
-          <ContentTitle title={lang.en.newChat} style={{ color: 'white' }} />
-        </Appbar.Header>
-        <View style={styles.container}>
-          <TextInput
-            value={id}
-            onChangeText={(id) => {
-              setId(id), seterrorMessege('');
-            }}
-            style={styles.input}
-            placeholder="Enter Group ID"
-          />
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View>
+          <Appbar.Header style={styles.appHeader}>
+            <Appbar.BackAction onPress={() => navigation.goBack()} />
+            <ContentTitle title={lang.en.newChat} style={{ color: 'white' }} />
+          </Appbar.Header>
+          <View style={styles.container}>
+            <TextInput
+              value={id}
+              onChangeText={(id) => {
+                setId(id), seterrorMessege('');
+              }}
+              style={styles.input}
+              placeholder="Enter Group ID"
+            />
 
-          <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
-            {errorMessege}
-          </Text>
+            <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
+              {errorMessege}
+            </Text>
 
-          <Button mode="contained" style={styles.Button} onPress={joinGroup}>
-            Join Group
-          </Button>
+            <Button mode="contained" style={styles.Button} onPress={joinGroup}>
+              Join Group
+            </Button>
 
-          <View
-            style={{
-              marginTop: 30,
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-            }}
-          >
-            <Text>Don't have an existing group ? </Text>
-            <TouchableOpacity onPress={() => setScreen('create')}>
-              <Text> Create one! </Text>
-            </TouchableOpacity>
+            <View
+              style={{
+                marginTop: 30,
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+              }}
+            >
+              <Text>Don't have an existing group ? </Text>
+              <TouchableOpacity onPress={() => setScreen('create')}>
+                <Text> Create one! </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   };
 
   const renderCreateGroup = () => {
     return (
-      <View>
-        <Appbar.Header style={styles.appHeader}>
-          <Appbar.BackAction onPress={() => navigation.goBack()} />
-          <ContentTitle title={lang.en.newChat} style={{ color: 'white' }} />
-        </Appbar.Header>
-        <View style={styles.container}>
-          <TextInput
-            value={title}
-            onChangeText={(title) => setTitle(title)}
-            style={styles.input}
-            placeholder="Enter Group Title"
-          />
-          <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
-            {errorMessege}
-          </Text>
-          <Button mode="contained" onPress={createGroup} style={styles.Button}>
-            Create Group
-          </Button>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        <View>
+          <Appbar.Header style={styles.appHeader}>
+            <Appbar.BackAction onPress={() => navigation.goBack()} />
+            <ContentTitle title={lang.en.newChat} style={{ color: 'white' }} />
+          </Appbar.Header>
+          <View style={styles.container}>
+            <TextInput
+              value={title}
+              onChangeText={(title) => setTitle(title)}
+              style={styles.input}
+              placeholder="Enter Group Title"
+            />
+            <Text style={{ color: 'red', textAlign: 'center', fontSize: 12, marginBottom: 6 }}>
+              {errorMessege}
+            </Text>
+            <Button mode="contained" onPress={createGroup} style={styles.Button}>
+              Create Group
+            </Button>
 
-          <View
-            style={{
-              marginTop: 30,
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-            }}
-          >
-            <Text>Have group already ? </Text>
-            <TouchableOpacity onPress={() => setScreen('join')}>
-              <Text> Join! </Text>
-            </TouchableOpacity>
+            <View
+              style={{
+                marginTop: 30,
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+              }}
+            >
+              <Text>Have group already ? </Text>
+              <TouchableOpacity onPress={() => setScreen('join')}>
+                <Text> Join! </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   };
 
