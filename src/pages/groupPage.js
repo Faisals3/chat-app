@@ -6,20 +6,22 @@ import {
   ImageBackground,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from 'react-native';
-import { GiftedChat, Bubble } from 'react-native-gifted-chat';
-import { useDispatch, useSelector } from 'react-redux';
+import { GiftedChat, Bubble, Actions } from 'react-native-gifted-chat';
+import { useSelector } from 'react-redux';
 import { Appbar } from 'react-native-paper';
 import { dbRoot } from '../APIs/firebase';
+import * as DocumentPicker from 'expo-document-picker';
+import * as ImagePicker from 'expo-image-picker';
+import * as firebase from 'firebase';
+import { uuid } from '../utils/uuidv4.js';
 
 export default function groupChat({ navigation }) {
   const [messages, setMessages] = useState([]);
+  const [imageuri, setImageuri] = useState('');
   const activeChat = useSelector((state) => state.chat);
   const currentUser = useSelector((state) => state.user);
-  const [testMessages, setTestMessages] = useState([]);
-  const [uploadedMessages, setUploadMessages] = useState(false);
-
-  const dispatch = useDispatch();
 
   useEffect(() => {
     getMessagesFromFireStore();
@@ -57,6 +59,7 @@ export default function groupChat({ navigation }) {
       .set(messagesToSend[0])
       .then(() => {
         console.log('message sent succesfuly');
+        setImageuri('');
       })
       .catch(() => {
         console.log('sent message failed');
@@ -73,6 +76,81 @@ export default function groupChat({ navigation }) {
       style={{ alignItems: 'center', marginRight: 40 }}
     />
   );
+
+  const renderActions = (props) => {
+    return (
+      <Actions
+        {...props}
+        options={{
+          ['Document']: async (props) => {
+            try {
+              let result = await DocumentPicker.getDocumentAsync({});
+              console.log(result);
+            } catch (e) {
+              throw e;
+            }
+          },
+          ['Photos']: async (props) => {
+            let result = await ImagePicker.launchImageLibraryAsync({
+              mediaTypes: ImagePicker.MediaTypeOptions.All,
+              allowsEditing: true,
+              aspect: [4, 3],
+              quality: 1,
+            });
+
+            console.log(result);
+
+            //send image unique id to group chat
+
+            if (!result.cancelled) {
+              let photoID = uuid();
+              uploadImage(result.uri, photoID)
+                .then(() => {
+                  console.log('Image sent succesfuly');
+                  var storageRef = firebase.storage().ref();
+                  storageRef
+                    .child('images/' + photoID)
+                    .getDownloadURL()
+                    .then((url) => {
+                      setImageuri(url);
+                      console.log(url);
+                      onSend({
+                        _id: photoID,
+                        createdAt: new Date(),
+                        image: imageuri,
+                        user: {
+                          _id: currentUser.uid,
+                          avatar: null,
+                          name: currentUser.email,
+                        },
+                      });
+                    });
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+            }
+          },
+          Cancel: (props) => {
+            console.log('Cancel');
+          },
+        }}
+        onSend={(args) => console.log(args)}
+      />
+    );
+  };
+
+  uploadImage = async (uri, imageName) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    var ref = firebase
+      .storage()
+      .ref()
+      .child('images/' + imageName);
+
+    return ref.put(blob);
+  };
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -111,6 +189,7 @@ export default function groupChat({ navigation }) {
                 />
               );
             }}
+            renderActions={() => renderActions()}
             user={{
               _id: currentUser.uid,
               avatar: null,
